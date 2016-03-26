@@ -1,7 +1,7 @@
 {
-  "name": "FONAServer",
+  "name": "minibots",
   "version": "1.0.0",
-  "description": "",
+  "description": "ERROR: No README data found!",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.15.0",
@@ -13,5 +13,12 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/masonbrothers/minibotsController.git"
+  },
+  "bugs": {
+    "url": "https://github.com/masonbrothers/minibotsController/issues"
+  }
 }
