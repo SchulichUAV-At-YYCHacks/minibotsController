@@ -17,8 +17,8 @@ window.onresize = function(event)
 function functReset(x,y)
 {
 	var smallestSize = Math.min(window.innerWidth, window.innerHeight);
-	context.canvas.width = smallestSize/2;
-	context.canvas.height = smallestSize/2;
+	context.canvas.width = smallestSize*4/5;
+	context.canvas.height = smallestSize*4/5;
 	drawBackground();
 	drawCenter(x,y);
 }
@@ -29,6 +29,7 @@ function drawBackground()
 {
 	var smallest = Math.min(canvas.width, canvas.height);
 	context.beginPath();
+    context.lineWidth = 4;
 	context.arc(smallest/2, smallest/2, smallest/3, 0, 2*Math.PI);
 	context.stroke();
 }
@@ -44,6 +45,7 @@ function drawCenter(x,y)
 		y = smallest/2;
 	}
 	context.beginPath();
+    context.lineWidth = 3;
 	context.arc(x, y, smallest/8, 0, 2*Math.PI);
 	context.stroke();
 }
@@ -52,31 +54,55 @@ var clicked = false;
 var mouse = true;
 $("#controllerJoystickCanvas").mousedown(function(){
 	if (!mouse) return;
-	functReset(-1,-1);
-	moveRobot(0,0);
-	clicked = true;
+    controllerDown();
 });
 
 $(window).mouseup(function(){
 	if (!mouse) return;
-	console.log(!$("joystickController").is(":visible"));
-	if ($("joystickController").is(":visible")) return;
+    controllerUp();
+});
+
+$("#controllerJoystickCanvas").mousemove(function(data){
+    mouse = true;
+    if (!clicked) return;
+    controllerMove(data);
+});
+
+
+$(document).ready(function(){
+    var joy = document.getElementById("controllerJoystickCanvas");
+    joy.addEventListener("touchstart", controllerDown, false);
+    joy.addEventListener("touchend", controllerUp, false);
+    joy.addEventListener("touchcancel", controllerUp, false);
+    joy.addEventListener("touchmove", controllerMove, false);
+    joy.addEventListener("touchmove", function(){
+        mouse = false;
+    }, false);
+});
+
+function controllerDown()
+{
+    functReset(-1,-1);
+	moveRobot(0,0);
+	clicked = true;
+}
+
+function controllerUp()
+{
+    console.log(!$("joystickController").is(":visible"));
+	if ($("joystickController").is(":visible"));
 	{
 		functReset(-1,-1);
 		moveRobot(0,0);
 		clicked = false;
 	}
-});
+}
 
-
-
-$("#controllerJoystickCanvas").mousemove(function(data){
-	if (!mouse) return;
-	if (!clicked) return;
-
-	var location = mousePosition(canvas,data);
+function controllerMove(data)
+{
+	var location = mousePosition(canvas,data,mouse);
 	moveController(location);
-});
+}
 
 function moveController(location)
 {
@@ -91,23 +117,38 @@ function moveController(location)
 	if (leftMotor<-100) leftMotor = -100;
 	if (rightMotor>100) rightMotor = 100;
 	if (rightMotor<-100) rightMotor = -100;
-	if (count >= 10)
-	{
+	
+    //if (count >= 10)
+	//{
+    if (leftMotor==null || rightMotor == null) return;
 		moveRobot(leftMotor,rightMotor);
 		count = 0;
-	}
-	else
-		count++;
+	//}
+	//else
+	//	count++;
 	
 }
 
-function mousePosition(obj, location)
+function mousePosition(obj, location, ismouse)
 {
-	var rect = obj.getBoundingClientRect();
-	return {
-		x: location.clientX - rect.left,
-		y: location.clientY - rect.top
-	}
+    var rect = obj.getBoundingClientRect();
+    if (ismouse)
+    {
+        return {
+            x: location.clientX - rect.left,
+            y: location.clientY - rect.top
+        } 
+    }
+    else //is touch
+    {
+        var touch = location.targetTouches[0];
+        console.log(rect.left);
+        return {
+            x: touch.pageX - rect.left,
+            y: touch.pageY - rect.top
+        }
+    }
+
 }
 
 $(document).ready(function(){
