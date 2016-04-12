@@ -1,18 +1,19 @@
 {
-  "name": "minibots",
+  "name": "Minibots Controller",
   "version": "1.0.0",
-  "description": "ERROR: No README data found!",
+  "description": "See README.md",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
+    "inliner": "^1.8.2",
     "request": "^2.69.0"
   },
   "scripts": {
     "test": "nodejs server.js",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Mason Brothers",
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
