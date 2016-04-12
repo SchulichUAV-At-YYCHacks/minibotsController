@@ -36,3 +36,6 @@ node compress.js
 ## Troubleshooting
 
 Note that on some machines, the ``` node ``` command may not work properly. It may be that you have a different version of Node.js installed. Try running ``` nodejs ``` instead.
+
+## Acknowledgments
+This project uses jQuery. You can see their license at http://jquery.org/license.
