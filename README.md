@@ -1,6 +1,6 @@
-#Minibots controller
+#Minibots Controller
 
-This controller is designed to control a robot with a mobile device over wifi!
+This controller is designed to control a robot with a mobile device over Wi-Fi!
 
 ## To run:
 
@@ -17,3 +17,22 @@ npm start
 ```
 
 Then navigate to http://localhost:5005 in your web browser.
+
+## To build an HTML file for uploaded to robot:
+
+The robot requires a single file webpage. The code will be minified and combined into a single HTML file.
+
+Make sure you have run the install command:
+
+```
+npm install
+```
+
+Then you can create the compressed file by running:
+```
+node compress.js
+```
+
+## Troubleshooting
+
+Note that on some machines, the ``` node ``` command may not work properly. It may be that you have a different version of Node.js installed. Try running ``` nodejs ``` instead.
