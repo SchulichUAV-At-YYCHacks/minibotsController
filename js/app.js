@@ -204,10 +204,18 @@ document.getElementById("goToJoystick").onclick = function(){
 
 function moveRobot(leftMotor, rightMotor)
 {
-	var object = {left: leftMotor, right: rightMotor};
-	var output = JSON.stringify(object);
+    var output = "left=" + leftMotor.toString() + "&right=" + rightMotor.toString()
 	$.post("/command", output, function(input){
 		console.log(input);
 	});
 	console.log(output);
 };
+
+
+
+
+function postData(path, output, callback)
+{
+    //xhttp.open("POST", path,)
+    //callback("hello")
+}
