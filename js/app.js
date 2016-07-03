@@ -1,5 +1,19 @@
-$("#buttonController").toggle();
-$("#joystickController").toggle();
+hideElement("buttonController")
+hideElement("joystickController")
+hideElement("homeScreen")
+showElement("homeScreen")
+function hideElement(theElement)
+{
+    document.getElementById(theElement).style.visibility = "hidden";
+}
+
+
+function showElement(theElement)
+{
+    document.getElementById(theElement).style.visibility = "visible";
+}
+
+
 var canvas = document.getElementById("controllerJoystickCanvas");
 var context = canvas.getContext("2d");
 
@@ -22,8 +36,6 @@ function functReset(x,y)
 	drawBackground();
 	drawCenter(x,y);
 }
-
-//$("#homeScreen").toggle(); //Delete before release
 
 function drawBackground()
 {
@@ -173,28 +185,29 @@ $(document).ready(function(){
 	});
 
 	$("#goBackButton").click(function(){
-		$("#buttonController").toggle();
-		$("#homeScreen").toggle();
+		hideElement("buttonController");
+		showElement("homeScreen");
 	});
 });
 
 $(document).ready(function(){
 	$("#bottomGoBackButton").click(function(){
-		$("#joystickController").toggle();
-		$("#homeScreen").toggle();
+		hideElement("joystickController");
+		showElement("homeScreen");
 	});
 
 });
 
 $(document).ready(function(){
 	$("#goToButtons").click(function(){
-		$("#buttonController").toggle();
-		$("#homeScreen").toggle();
+		showElement("buttonController");
+		hideElement("homeScreen");
 	});
 
 	$("#goToJoystick").click(function(){
-		$("#joystickController").toggle();
-		$("#homeScreen").toggle();
+		showElement("joystickController");
+		hideElement("homeScreen");
+        console.log("asdf");
 	});
 });
 
