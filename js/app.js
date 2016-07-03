@@ -1,7 +1,3 @@
-hideElement("buttonController")
-hideElement("joystickController")
-hideElement("homeScreen")
-showElement("homeScreen")
 function hideElement(theElement)
 {
     document.getElementById(theElement).style.visibility = "hidden";
@@ -12,6 +8,12 @@ function showElement(theElement)
 {
     document.getElementById(theElement).style.visibility = "visible";
 }
+
+
+hideElement("buttonController");
+hideElement("joystickController");
+hideElement("homeScreen");
+showElement("homeScreen");
 
 
 var canvas = document.getElementById("controllerJoystickCanvas");
@@ -204,18 +206,22 @@ document.getElementById("goToJoystick").onclick = function(){
 
 function moveRobot(leftMotor, rightMotor)
 {
-    var output = "left=" + leftMotor.toString() + "&right=" + rightMotor.toString()
-	$.post("/command", output, function(input){
+    var output = "left=" + leftMotor + "&right=" + rightMotor
+	postData("/command", output, function(input){
 		console.log(input);
 	});
 	console.log(output);
 };
 
-
-
-
 function postData(path, output, callback)
 {
-    //xhttp.open("POST", path,)
-    //callback("hello")
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", path, true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.onreadystatechange = function(){
+        if (xmlhttp.readyState ==  XMLHttpRequest.DONE && xmlhttp.status == 200){
+            callback(xmlhttp.responseText);
+        }
+    };
+    xmlhttp.send(output); 
 }
