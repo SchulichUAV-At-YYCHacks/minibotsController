@@ -69,10 +69,10 @@ document.getElementById("controllerJoystickCanvas").onmousedown = function(){
     controllerDown();
 };
 
-$(window).mouseup(function(){
+window.onmouseup = function(){
 	if (!mouse) return;
     controllerUp();
-});
+};
 
 document.getElementById("controllerJoystickCanvas").onmousemove = function(data){
     mouse = true;
@@ -81,16 +81,15 @@ document.getElementById("controllerJoystickCanvas").onmousemove = function(data)
 };
 
 
-//$(document).ready(function(){
-    var joy = document.getElementById("controllerJoystickCanvas");
-    joy.addEventListener("touchstart", controllerDown, false);
-    joy.addEventListener("touchend", controllerUp, false);
-    joy.addEventListener("touchcancel", controllerUp, false);
-    joy.addEventListener("touchmove", controllerMove, false);
-    joy.addEventListener("touchmove", function(){
-        mouse = false;
-    }, false);
-//});
+var joy = document.getElementById("controllerJoystickCanvas");
+joy.addEventListener("touchstart", controllerDown, false);
+joy.addEventListener("touchend", controllerUp, false);
+joy.addEventListener("touchcancel", controllerUp, false);
+joy.addEventListener("touchmove", controllerMove, false);
+joy.addEventListener("touchmove", function(){
+    mouse = false;
+}, false);
+
 
 function controllerDown()
 {
@@ -163,52 +162,45 @@ function mousePosition(obj, location, ismouse)
 
 }
 
-$(document).ready(function(){
-	document.getElementById("rightButton").onclick = function(){
-		moveRobot(-100, 100);
-	};
+document.getElementById("rightButton").onclick = function(){
+    moveRobot(-100, 100);
+};
 
-	document.getElementById("forwardButton").onclick = function(){
-		moveRobot(100, 100);
-	};
+document.getElementById("forwardButton").onclick = function(){
+    moveRobot(100, 100);
+};
 
-	document.getElementById("stopButton").onclick = function(){
-		moveRobot(0, 0);
-	};
+document.getElementById("stopButton").onclick = function(){
+    moveRobot(0, 0);
+};
 
-	document.getElementById("leftButton").onclick = function(){
-		moveRobot(100, -100);
-	};
+document.getElementById("leftButton").onclick = function(){
+    moveRobot(100, -100);
+};
 
-	document.getElementById("reverseButton").onclick = function(){
-		moveRobot(-100, -100);
-	};
+document.getElementById("reverseButton").onclick = function(){
+    moveRobot(-100, -100);
+};
 
-	document.getElementById("goBackButton").onclick = function(){
-		hideElement("buttonController");
-		showElement("homeScreen");
-	};
-});
+document.getElementById("goBackButton").onclick = function(){
+    hideElement("buttonController");
+    showElement("homeScreen");
+};
 
-$(document).ready(function(){
-	document.getElementById("bottomGoBackButton").onclick = function(){
-		hideElement("joystickController");
-		showElement("homeScreen");
-	};
+document.getElementById("bottomGoBackButton").onclick = function(){
+    hideElement("joystickController");
+    showElement("homeScreen");
+};
 
-});
+document.getElementById("goToButtons").onclick = function(){
+    showElement("buttonController");
+    hideElement("homeScreen");
+};
 
-$(document).ready(function(){
-	document.getElementById("goToButtons").onclick = function(){
-		showElement("buttonController");
-		hideElement("homeScreen");
-	};
-
-	document.getElementById("goToJoystick").onclick = function(){
-		showElement("joystickController");
-		hideElement("homeScreen");
-	};
-});
+document.getElementById("goToJoystick").onclick = function(){
+    showElement("joystickController");
+    hideElement("homeScreen");
+};
 
 function moveRobot(leftMotor, rightMotor)
 {
@@ -219,5 +211,3 @@ function moveRobot(leftMotor, rightMotor)
 	});
 	console.log(output);
 };
-
-//$.get("/test","test");
