@@ -1,6 +1,6 @@
 function hideElement(theElement)
 {
-    document.getElementById(theElement).style.visibility = "hidden";
+    document.getElementById(theElement).style.visibility = "collapse";
 }
 
 
@@ -12,9 +12,7 @@ function showElement(theElement)
 
 hideElement("buttonController");
 hideElement("joystickController");
-hideElement("homeScreen");
-showElement("homeScreen");
-
+hideElement("keyboardController");
 
 var canvas = document.getElementById("controllerJoystickCanvas");
 var context = canvas.getContext("2d");
@@ -204,6 +202,16 @@ document.getElementById("goToJoystick").onclick = function(){
     hideElement("homeScreen");
 };
 
+document.getElementById("goToKeyboard").onclick = function(){
+    showElement("keyboardController");
+    hideElement("homeScreen");
+};
+
+document.getElementById("goToSettings").onclick = function(){
+    showElement("joystickController");
+    hideElement("homeScreen");
+};
+
 function moveRobot(leftMotor, rightMotor)
 {
     var output = "left=" + leftMotor + "&right=" + rightMotor
@@ -224,4 +232,52 @@ function postData(path, output, callback)
         }
     };
     xmlhttp.send(output); 
+}
+
+window.onkeydown = function(data){
+    console.log('asdf');
+    console.log(data.keyCode);
+    //a 65
+    //w 87
+    //s 83
+    //d 68
+    //up 38
+    //down 40
+    //left 37
+    //right 39
+    //space 32
+    
+    if (document.getElementById('keyboardController').style.visibility == 'visible')
+    {
+        //rightButton
+        if (data.keyCode == 39 || data.keyCode == 68)
+        {
+            moveRobot(-100, 100);
+        }
+
+        //forwardButton
+        if (data.keyCode == 38 || data.keyCode == 87)
+        {
+            moveRobot(100, 100);
+        }
+
+        //stopButton
+        if (data.keyCode == 32)
+        {
+            moveRobot(0, 0);
+        }
+        //leftButton
+        if (data.keyCode == 37 || data.keyCode == 65)
+        {
+            moveRobot(100, -100);
+        }
+
+        //reverseButton
+        if (data.keyCode == 40 || data.keyCode == 83)
+        {
+            moveRobot(-100, -100);
+        }
+        
+        document.getElementById('directionalStatus').innerHTML = data.keyCode;
+    }
 }

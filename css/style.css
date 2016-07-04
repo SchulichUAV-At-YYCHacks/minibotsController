@@ -1,61 +1,71 @@
 
-		html, body
-		{
-			margin: 0;
-			height: 100%;
-		}
-		#buttonController
-		{
-			
-		}
+html, body
+{
+    margin: 0;
+    height: 100%;
+}
+#buttonController
+{
 
-		#joystickController
-		{
-			padding: 0;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			position: absolute;
-			text-align: center;
-		}
+}
 
-		#controllerTable
-		{
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			height: 100%;	
-			width: 100%;
+#joystickController
+{
+    padding: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    text-align: center;
+}
 
-		}
-		.controllerButton
-		{
-			background-color: red;
-			border: 1px solid black;
-			text-align: center;
-			width: 33.33333333333%;
-			height: 33.33333333333%;
-		}
-		#bottomGoBackButton
-		{
-			position: fixed;
-			bottom: 0;
-			left: 0;
-		}
-		#homeScreen
-		{
-			margin: 8px;
-			text-align: center;
-		}
-		#homeScreenTable
-		{
-			margin-left: auto;
-			margin-right: auto;
-		}
-		#controllerJoystickCanvas
-		{
-			display: inline;
-		}
+#controllerTable
+{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;	
+    width: 100%;
+
+}
+.controllerButton
+{
+    background-color: red;
+    border: 1px solid black;
+    text-align: center;
+    width: 33.33333333333%;
+    height: 33.33333333333%;
+}
+#bottomGoBackButton
+{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+#homeScreen
+{
+    margin: 8px;
+    text-align: center;
+}
+#homeScreenTable
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+#controllerJoystickCanvas
+{
+    display: inline;
+}
+#keyboardController
+{
+    margin: 8px;
+}
+#directionalStatus
+{
+    margin: 8px;
+    text-align: center;
+    font-size: 24px;
+}
