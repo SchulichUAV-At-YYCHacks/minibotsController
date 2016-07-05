@@ -1,12 +1,8 @@
 
-html, body
+html
 {
     margin: 0;
     height: 100%;
-}
-#buttonController
-{
-
 }
 
 #joystickController
@@ -39,7 +35,7 @@ html, body
     width: 33.33333333333%;
     height: 33.33333333333%;
 }
-#bottomGoBackButton
+.bottomGoBackButton
 {
     position: fixed;
     bottom: 0;
@@ -68,4 +64,30 @@ html, body
     margin: 8px;
     text-align: center;
     font-size: 24px;
+}
+
+#buttonController
+{
+    display: none;
+}
+
+#joystickController
+{
+    display: none;
+}
+
+#keyboardController
+{
+    display: none;
+}
+
+#settingsTitle
+{
+    text-align: center;   
+}
+
+#settingsController
+{
+    text-align: center;
+    display: none;
 }

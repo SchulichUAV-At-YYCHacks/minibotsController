@@ -1,12 +1,14 @@
+document.getElementById("numberId").value = document.getElementById("rangeId").value = 50;
+
 function hideElement(theElement)
 {
-    document.getElementById(theElement).style.visibility = "collapse";
+    document.getElementById(theElement).style.display = "none";
 }
 
 
 function showElement(theElement)
 {
-    document.getElementById(theElement).style.visibility = "visible";
+    document.getElementById(theElement).style.display = "block";
 }
 
 
@@ -100,8 +102,7 @@ function controllerDown()
 
 function controllerUp()
 {
-    console.log(document.getElementById("joystickController") != 'visible');
-	if (document.getElementById("joystickController") == 'visible');
+	if (document.getElementById("joystickController").style.display != 'none');
 	{
 		functReset(-1,-1);
 		moveRobot(0,0);
@@ -187,10 +188,24 @@ document.getElementById("goBackButton").onclick = function(){
     showElement("homeScreen");
 };
 
+/*
 document.getElementById("bottomGoBackButton").onclick = function(){
     hideElement("joystickController");
     showElement("homeScreen");
 };
+*/
+
+var buttonsGoBack = document.getElementsByClassName("bottomGoBackButton");
+
+for (var i = 0; i < buttonsGoBack.length; i++)
+{
+    buttonsGoBack[i].onclick = function(){
+    hideElement("joystickController");
+    hideElement("keyboardController");
+    hideElement("settingsController");
+    showElement("homeScreen");
+};
+}
 
 document.getElementById("goToButtons").onclick = function(){
     showElement("buttonController");
@@ -208,7 +223,7 @@ document.getElementById("goToKeyboard").onclick = function(){
 };
 
 document.getElementById("goToSettings").onclick = function(){
-    showElement("joystickController");
+    showElement("settingsController");
     hideElement("homeScreen");
 };
 
@@ -219,6 +234,20 @@ function moveRobot(leftMotor, rightMotor)
 		console.log(input);
 	});
 	console.log(output);
+};
+
+document.getElementById("rangeId").onchange = function()
+{
+    
+    document.getElementById("numberId").value = document.getElementById("rangeId").value
+    
+};
+
+document.getElementById("numberId").onchange = function()
+{
+    
+    document.getElementById("rangeId").value = document.getElementById("numberId").value
+    
 };
 
 function postData(path, output, callback)
@@ -247,7 +276,7 @@ window.onkeydown = function(data){
     //right 39
     //space 32
     
-    if (document.getElementById('keyboardController').style.visibility == 'visible')
+    if (document.getElementById('keyboardController').style.display != 'none')
     {
         //rightButton
         if (data.keyCode == 39 || data.keyCode == 68)
