@@ -9,6 +9,6 @@ new Inliner('index.html', function (error, html) {
 	fs.writeFile("compressed.html", html, function(err) {
 		if(err)
 			console.log(err);
-		console.log("Compressed!!! Checkout compressed.html");
+		//console.log("Compressed!!! Checkout compressed.html");
 	}); 
 });
