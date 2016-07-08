@@ -1,12 +1,40 @@
-$("#buttonController").toggle();
-$("#joystickController").toggle();
+var align;
+
+if (localStorage.align)
+    align = localStorage.align*1
+else
+    align = 0;
+
+var alignNumberId = document.getElementById("alignNumberId");
+alignNumberId.value = align;
+var alignRangeId = document.getElementById("alignRangeId");
+alignRangeId.value = align + 50;
+
+
+
+function hideElement(theElement)
+{
+    document.getElementById(theElement).style.display = "none";
+}
+
+
+function showElement(theElement)
+{
+    document.getElementById(theElement).style.display = "block";
+}
+
+
+hideElement("buttonController");
+hideElement("joystickController");
+hideElement("keyboardController");
+
 var canvas = document.getElementById("controllerJoystickCanvas");
 var context = canvas.getContext("2d");
 
 var count = 0;
 
-context.fillStyle = "#FF0000";
-context.fillRect(0,0,1400,400);
+//context.fillStyle = "#FF0000";
+//context.fillRect(0,0,1400,400);
 functReset(-1,-1);
 
 window.onresize = function(event)
@@ -22,8 +50,6 @@ function functReset(x,y)
 	drawBackground();
 	drawCenter(x,y);
 }
-
-//$("#homeScreen").toggle(); //Delete before release
 
 function drawBackground()
 {
@@ -52,33 +78,30 @@ function drawCenter(x,y)
 
 var clicked = false;
 var mouse = true;
-$("#controllerJoystickCanvas").mousedown(function(){
+canvas.onmousedown = function(){
 	if (!mouse) return;
     controllerDown();
-});
+};
 
-$(window).mouseup(function(){
+window.onmouseup = function(){
 	if (!mouse) return;
     controllerUp();
-});
+};
 
-$("#controllerJoystickCanvas").mousemove(function(data){
+canvas.onmousemove = function(data){
     mouse = true;
     if (!clicked) return;
     controllerMove(data);
-});
+};
 
+canvas.addEventListener("touchstart", controllerDown, false);
+canvas.addEventListener("touchend", controllerUp, false);
+canvas.addEventListener("touchcancel", controllerUp, false);
+canvas.addEventListener("touchmove", controllerMove, false);
+canvas.addEventListener("touchmove", function(){
+    mouse = false;
+}, false);
 
-$(document).ready(function(){
-    var joy = document.getElementById("controllerJoystickCanvas");
-    joy.addEventListener("touchstart", controllerDown, false);
-    joy.addEventListener("touchend", controllerUp, false);
-    joy.addEventListener("touchcancel", controllerUp, false);
-    joy.addEventListener("touchmove", controllerMove, false);
-    joy.addEventListener("touchmove", function(){
-        mouse = false;
-    }, false);
-});
 
 function controllerDown()
 {
@@ -89,8 +112,7 @@ function controllerDown()
 
 function controllerUp()
 {
-    console.log(!$("joystickController").is(":visible"));
-	if ($("joystickController").is(":visible"));
+	if (document.getElementById("joystickController").style.display != 'none');
 	{
 		functReset(-1,-1);
 		moveRobot(0,0);
@@ -151,61 +173,161 @@ function mousePosition(obj, location, ismouse)
 
 }
 
-$(document).ready(function(){
-	$("#rightButton").click(function(){
-		moveRobot(-100, 100);
-	});
+document.getElementById("rightButton").onclick = function(){
+    moveRobot(-100, 100);
+};
 
-	$("#forwardButton").click(function(){
-		moveRobot(100, 100);
-	});
+document.getElementById("forwardButton").onclick = function(){
+    moveRobot(100, 100);
+};
 
-	$("#stopButton").click(function(){
-		moveRobot(0, 0);
-	});
+document.getElementById("stopButton").onclick = function(){
+    moveRobot(0, 0);
+};
 
-	$("#leftButton").click(function(){
-		moveRobot(100, -100);
-	});
+document.getElementById("leftButton").onclick = function(){
+    moveRobot(100, -100);
+};
 
-	$("#reverseButton").click(function(){
-		moveRobot(-100, -100);
-	});
+document.getElementById("reverseButton").onclick = function(){
+    moveRobot(-100, -100);
+};
 
-	$("#goBackButton").click(function(){
-		$("#buttonController").toggle();
-		$("#homeScreen").toggle();
-	});
-});
+document.getElementById("goBackButton").onclick = function(){
+    hideElement("buttonController");
+    showElement("homeScreen");
+    hideElement("bottomGoBackButton");
+};
 
-$(document).ready(function(){
-	$("#bottomGoBackButton").click(function(){
-		$("#joystickController").toggle();
-		$("#homeScreen").toggle();
-	});
 
-});
+document.getElementById("bottomGoBackButton").onclick = function(){
+    hideElement("joystickController");
+    hideElement("buttonController");
+    hideElement("keyboardController");
+    hideElement("settingsController");
+    showElement("homeScreen");
+    hideElement("bottomGoBackButton");
+};
 
-$(document).ready(function(){
-	$("#goToButtons").click(function(){
-		$("#buttonController").toggle();
-		$("#homeScreen").toggle();
-	});
+/*
+var buttonsGoBack = document.getElementsByClassName("bottomGoBackButton");
 
-	$("#goToJoystick").click(function(){
-		$("#joystickController").toggle();
-		$("#homeScreen").toggle();
-	});
-});
+for (var i = 0; i < buttonsGoBack.length; i++)
+{
+    buttonsGoBack[i].onclick = function(){
+        hideElement("joystickController");
+        hideElement("keyboardController");
+        hideElement("settingsController");
+        showElement("homeScreen");
+    };
+}
+*/
+document.getElementById("goToButtons").onclick = function(){
+    showElement("buttonController");
+    hideElement("homeScreen");
+    hideElement("bottomGoBackButton");
+};
+
+document.getElementById("goToJoystick").onclick = function(){
+    showElement("joystickController");
+    hideElement("homeScreen");
+    showElement("bottomGoBackButton");
+};
+
+document.getElementById("goToKeyboard").onclick = function(){
+    showElement("keyboardController");
+    hideElement("homeScreen");
+    showElement("bottomGoBackButton");
+};
+
+document.getElementById("goToSettings").onclick = function(){
+    showElement("settingsController");
+    hideElement("homeScreen");
+    showElement("bottomGoBackButton");
+};
 
 function moveRobot(leftMotor, rightMotor)
 {
-	var object = {left: leftMotor, right: rightMotor};
-	var output = JSON.stringify(object);
-	$.post("/command", output, function(input){
+    if (align < 0)
+        leftMotor = leftMotor * (1+align/100.0)
+    if (align > 0)
+        rightMotor = rightMotor * (1-align/100.0)
+    var output = "left=" + leftMotor + "&right=" + rightMotor
+    document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
+	postData("/command", output, function(input){
 		console.log(input);
 	});
 	console.log(output);
 };
 
-//$.get("/test","test");
+alignRangeId.onchange = function()
+{
+    align = alignNumberId.value = alignRangeId.value - 50;
+    localStorage.align = align;
+};
+
+alignNumberId.onchange = function()
+{
+    alignRangeId.value = (align = alignNumberId.value*1) + 50;
+    localStorage.align = align;
+};
+
+
+function postData(path, output, callback)
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", path, true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.onreadystatechange = function(){
+        if (xmlhttp.readyState ==  XMLHttpRequest.DONE && xmlhttp.status == 200){
+            callback(xmlhttp.responseText);
+        }
+    };
+    xmlhttp.send(output); 
+}
+
+window.onkeydown = function(data){
+    //a 65
+    //w 87
+    //s 83
+    //d 68
+    //up 38
+    //down 40
+    //left 37
+    //right 39
+    //space 32
+    
+    if (document.getElementById('keyboardController').style.display != 'none')
+    {
+        //rightButton
+        if (data.keyCode == 39 || data.keyCode == 68)
+        {
+            moveRobot(-100, 100);
+        }
+
+        //forwardButton
+        if (data.keyCode == 38 || data.keyCode == 87)
+        {
+            moveRobot(100, 100);
+        }
+
+        //stopButton
+        if (data.keyCode == 32)
+        {
+            moveRobot(0, 0);
+        }
+        //leftButton
+        if (data.keyCode == 37 || data.keyCode == 65)
+        {
+            moveRobot(100, -100);
+        }
+
+        //reverseButton
+        if (data.keyCode == 40 || data.keyCode == 83)
+        {
+            moveRobot(-100, -100);
+        }
+        
+        document.getElementById('directionalStatus').innerHTML = data.keyCode;
+    }
+}
