@@ -196,45 +196,54 @@ document.getElementById("reverseButton").onclick = function(){
 document.getElementById("goBackButton").onclick = function(){
     hideElement("buttonController");
     showElement("homeScreen");
+    hideElement("bottomGoBackButton");
+};
+
+
+document.getElementById("bottomGoBackButton").onclick = function(){
+    hideElement("joystickController");
+    hideElement("buttonController");
+    hideElement("keyboardController");
+    hideElement("settingsController");
+    showElement("homeScreen");
+    hideElement("bottomGoBackButton");
 };
 
 /*
-document.getElementById("bottomGoBackButton").onclick = function(){
-    hideElement("joystickController");
-    showElement("homeScreen");
-};
-*/
-
 var buttonsGoBack = document.getElementsByClassName("bottomGoBackButton");
 
 for (var i = 0; i < buttonsGoBack.length; i++)
 {
     buttonsGoBack[i].onclick = function(){
-    hideElement("joystickController");
-    hideElement("keyboardController");
-    hideElement("settingsController");
-    showElement("homeScreen");
-};
+        hideElement("joystickController");
+        hideElement("keyboardController");
+        hideElement("settingsController");
+        showElement("homeScreen");
+    };
 }
-
+*/
 document.getElementById("goToButtons").onclick = function(){
     showElement("buttonController");
     hideElement("homeScreen");
+    hideElement("bottomGoBackButton");
 };
 
 document.getElementById("goToJoystick").onclick = function(){
     showElement("joystickController");
     hideElement("homeScreen");
+    showElement("bottomGoBackButton");
 };
 
 document.getElementById("goToKeyboard").onclick = function(){
     showElement("keyboardController");
     hideElement("homeScreen");
+    showElement("bottomGoBackButton");
 };
 
 document.getElementById("goToSettings").onclick = function(){
     showElement("settingsController");
     hideElement("homeScreen");
+    showElement("bottomGoBackButton");
 };
 
 function moveRobot(leftMotor, rightMotor)
@@ -244,6 +253,7 @@ function moveRobot(leftMotor, rightMotor)
     if (align > 0)
         rightMotor = rightMotor * (1-align/100.0)
     var output = "left=" + leftMotor + "&right=" + rightMotor
+    document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
 	postData("/command", output, function(input){
 		console.log(input);
 	});
