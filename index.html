@@ -52,35 +52,36 @@
 
         <div id = "keyboardController">
             Your keyboard can be a controller as well!
-            <table>
-            
-                <tr>
-                    <td>Up:</td>
-                    <td>UpArrow</td>
-                    <td>or</td>
-                    <td>W</td>
-                </tr>
-                <tr>
-                    <td>Down:</td>
-                    <td>DownArrow</td>
-                    <td>or</td>
-                    <td>S</td>
-                </tr>
-                <tr>
-                    <td>Left:</td>
-                    <td>LeftArrow</td>
-                    <td>or</td>
-                    <td>A</td>
-                </tr>
-                <tr>
-                    <td>Right:</td>
-                    <td>RightArrow</td>
-                    <td>or</td>
-                    <td>D</td>
-                </tr>
-                    <td>Stop:</td>
-                    <td>Space</td>
-            </table>
+            <div class="instructions">
+                <table>
+                    <tr>
+                        <td>Up:</td>
+                        <td>UpArrow</td>
+                        <td>or</td>
+                        <td>W</td>
+                    </tr>
+                    <tr>
+                        <td>Down:</td>
+                        <td>DownArrow</td>
+                        <td>or</td>
+                        <td>S</td>
+                    </tr>
+                    <tr>
+                        <td>Left:</td>
+                        <td>LeftArrow</td>
+                        <td>or</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>Right:</td>
+                        <td>RightArrow</td>
+                        <td>or</td>
+                        <td>D</td>
+                    </tr>
+                        <td>Stop:</td>
+                        <td>Space</td>
+                </table>
+            </div>
             <br><br>
             <div id="directionalStatus">
             This
@@ -89,11 +90,20 @@
         </div>
         <div id = "settingsController">
             <h1>Settings</h1>
-            To fix alignment:
-            <input type="range" id="rangeId" /><br>
-            <input type="number" id="numberId" />
+            To fix alignment:<br>
+            <input type="range" id="alignRangeId" /><br>
+            <input type="number" id="alignNumberId" /><br>
+            <div class="instructions">
+                Negative numbers will pull the robot to the left.<br>
+                Positive numbers will pull the robot to the right.
+            </div>
             <button class="bottomGoBackButton">Go Back</button>
         </div>
+        
+        <div id = "bottomStatus">
+            <!--Enter a command.-->
+        </div>
+        
     </body>
 </html>
 <script type="text/javascript" src="js/app.js"></script>

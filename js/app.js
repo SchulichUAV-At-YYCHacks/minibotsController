@@ -1,4 +1,16 @@
-document.getElementById("numberId").value = document.getElementById("rangeId").value = 50;
+var align;
+
+if (localStorage.align)
+    align = localStorage.align*1
+else
+    align = 0;
+
+var alignNumberId = document.getElementById("alignNumberId");
+alignNumberId.value = align;
+var alignRangeId = document.getElementById("alignRangeId");
+alignRangeId.value = align + 50;
+
+
 
 function hideElement(theElement)
 {
@@ -21,8 +33,8 @@ var context = canvas.getContext("2d");
 
 var count = 0;
 
-context.fillStyle = "#FF0000";
-context.fillRect(0,0,1400,400);
+//context.fillStyle = "#FF0000";
+//context.fillRect(0,0,1400,400);
 functReset(-1,-1);
 
 window.onresize = function(event)
@@ -66,7 +78,7 @@ function drawCenter(x,y)
 
 var clicked = false;
 var mouse = true;
-document.getElementById("controllerJoystickCanvas").onmousedown = function(){
+canvas.onmousedown = function(){
 	if (!mouse) return;
     controllerDown();
 };
@@ -76,19 +88,17 @@ window.onmouseup = function(){
     controllerUp();
 };
 
-document.getElementById("controllerJoystickCanvas").onmousemove = function(data){
+canvas.onmousemove = function(data){
     mouse = true;
     if (!clicked) return;
     controllerMove(data);
 };
 
-
-var joy = document.getElementById("controllerJoystickCanvas");
-joy.addEventListener("touchstart", controllerDown, false);
-joy.addEventListener("touchend", controllerUp, false);
-joy.addEventListener("touchcancel", controllerUp, false);
-joy.addEventListener("touchmove", controllerMove, false);
-joy.addEventListener("touchmove", function(){
+canvas.addEventListener("touchstart", controllerDown, false);
+canvas.addEventListener("touchend", controllerUp, false);
+canvas.addEventListener("touchcancel", controllerUp, false);
+canvas.addEventListener("touchmove", controllerMove, false);
+canvas.addEventListener("touchmove", function(){
     mouse = false;
 }, false);
 
@@ -229,6 +239,10 @@ document.getElementById("goToSettings").onclick = function(){
 
 function moveRobot(leftMotor, rightMotor)
 {
+    if (align < 0)
+        leftMotor = leftMotor * (1+align/100.0)
+    if (align > 0)
+        rightMotor = rightMotor * (1-align/100.0)
     var output = "left=" + leftMotor + "&right=" + rightMotor
 	postData("/command", output, function(input){
 		console.log(input);
@@ -236,19 +250,18 @@ function moveRobot(leftMotor, rightMotor)
 	console.log(output);
 };
 
-document.getElementById("rangeId").onchange = function()
+alignRangeId.onchange = function()
 {
-    
-    document.getElementById("numberId").value = document.getElementById("rangeId").value
-    
+    align = alignNumberId.value = alignRangeId.value - 50;
+    localStorage.align = align;
 };
 
-document.getElementById("numberId").onchange = function()
+alignNumberId.onchange = function()
 {
-    
-    document.getElementById("rangeId").value = document.getElementById("numberId").value
-    
+    alignRangeId.value = (align = alignNumberId.value*1) + 50;
+    localStorage.align = align;
 };
+
 
 function postData(path, output, callback)
 {
@@ -264,8 +277,6 @@ function postData(path, output, callback)
 }
 
 window.onkeydown = function(data){
-    console.log('asdf');
-    console.log(data.keyCode);
     //a 65
     //w 87
     //s 83
