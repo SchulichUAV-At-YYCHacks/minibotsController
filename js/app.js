@@ -23,11 +23,6 @@ function showElement(theElement)
     document.getElementById(theElement).style.display = "block";
 }
 
-
-hideElement("buttonController");
-hideElement("joystickController");
-hideElement("keyboardController");
-
 var canvas = document.getElementById("controllerJoystickCanvas");
 var context = canvas.getContext("2d");
 
@@ -174,7 +169,7 @@ function mousePosition(obj, location, ismouse)
 }
 
 document.getElementById("rightButton").onclick = function(){
-    moveRobot(-100, 100);
+    moveRobot(100, -100);
 };
 
 document.getElementById("forwardButton").onclick = function(){
@@ -186,7 +181,7 @@ document.getElementById("stopButton").onclick = function(){
 };
 
 document.getElementById("leftButton").onclick = function(){
-    moveRobot(100, -100);
+    moveRobot(-100, 100);
 };
 
 document.getElementById("reverseButton").onclick = function(){
@@ -252,6 +247,13 @@ function moveRobot(leftMotor, rightMotor)
         leftMotor = leftMotor * (1+align/100.0)
     if (align > 0)
         rightMotor = rightMotor * (1-align/100.0)
+    if (document.getElementById("forwardOnly").checked)
+    {
+        if (leftMotor < 0)
+            leftMotor = 0;
+        if (rightMotor < 0)
+            rightMotor = 0;
+    }
     var output = "left=" + leftMotor + "&right=" + rightMotor
     document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
 	postData("/command", output, function(input){
