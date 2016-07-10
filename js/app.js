@@ -5,6 +5,18 @@ if (localStorage.align)
 else
     align = 0;
 
+var forwardOnly = document.getElementById("forwardOnly");
+
+forwardOnly.checked = true;
+if (typeof(localStorage.forwardOnly) != "undefined")
+{
+    if (localStorage.forwardOnly == "true")
+        forwardOnly.checked = true;
+    else
+        forwardOnly.checked = false;
+}
+    
+
 var alignNumberId = document.getElementById("alignNumberId");
 alignNumberId.value = align;
 var alignRangeId = document.getElementById("alignRangeId");
@@ -274,6 +286,10 @@ alignNumberId.onchange = function()
     localStorage.align = align;
 };
 
+forwardOnly.onchange = function()
+{
+     localStorage.forwardOnly = forwardOnly.checked
+};
 
 function postData(path, output, callback)
 {
