@@ -7,6 +7,14 @@ else
 
 var forwardOnly = document.getElementById("forwardOnly");
 
+var joystickController = document.getElementById("joystickController");
+var buttonController = document.getElementById("buttonController");
+var keyboardController = document.getElementById("keyboardController");
+var settingsController = document.getElementById("settingsController");
+var homeScreen = document.getElementById("homeScreen");
+var bottomGoBackButton = document.getElementById("bottomGoBackButton");
+
+
 forwardOnly.checked = true;
 if (typeof(localStorage.forwardOnly) != "undefined")
 {
@@ -26,13 +34,13 @@ alignRangeId.value = align + 50;
 
 function hideElement(theElement)
 {
-    document.getElementById(theElement).style.display = "none";
+    theElement.style.display = "none";
 }
 
 
 function showElement(theElement)
 {
-    document.getElementById(theElement).style.display = "block";
+    theElement.style.display = "block";
 }
 
 var canvas = document.getElementById("controllerJoystickCanvas");
@@ -201,19 +209,19 @@ document.getElementById("reverseButton").onclick = function(){
 };
 
 document.getElementById("goBackButton").onclick = function(){
-    hideElement("buttonController");
-    showElement("homeScreen");
-    hideElement("bottomGoBackButton");
+    hideElement(buttonController);
+    showElement(homeScreen);
+    hideElement(bottomGoBackButton);
 };
 
 
 document.getElementById("bottomGoBackButton").onclick = function(){
-    hideElement("joystickController");
-    hideElement("buttonController");
-    hideElement("keyboardController");
-    hideElement("settingsController");
-    showElement("homeScreen");
-    hideElement("bottomGoBackButton");
+    hideElement(joystickController);
+    hideElement(buttonController);
+    hideElement(keyboardController);
+    hideElement(settingsController);
+    showElement(homeScreen);
+    hideElement(bottomGoBackButton);
 };
 
 /*
@@ -222,35 +230,35 @@ var buttonsGoBack = document.getElementsByClassName("bottomGoBackButton");
 for (var i = 0; i < buttonsGoBack.length; i++)
 {
     buttonsGoBack[i].onclick = function(){
-        hideElement("joystickController");
-        hideElement("keyboardController");
-        hideElement("settingsController");
-        showElement("homeScreen");
+        hideElement(joystickController);
+        hideElement(keyboardController);
+        hideElement(settingsController);
+        showElement(homeScreen);
     };
 }
 */
 document.getElementById("goToButtons").onclick = function(){
-    showElement("buttonController");
-    hideElement("homeScreen");
-    hideElement("bottomGoBackButton");
+    showElement(buttonController);
+    hideElement(homeScreen);
+    hideElement(bottomGoBackButton);
 };
 
 document.getElementById("goToJoystick").onclick = function(){
-    showElement("joystickController");
-    hideElement("homeScreen");
-    showElement("bottomGoBackButton");
+    showElement(joystickController);
+    hideElement(homeScreen);
+    showElement(bottomGoBackButton);
 };
 
 document.getElementById("goToKeyboard").onclick = function(){
-    showElement("keyboardController");
-    hideElement("homeScreen");
-    showElement("bottomGoBackButton");
+    showElement(keyboardController);
+    hideElement(homeScreen);
+    showElement(bottomGoBackButton);
 };
 
 document.getElementById("goToSettings").onclick = function(){
-    showElement("settingsController");
-    hideElement("homeScreen");
-    showElement("bottomGoBackButton");
+    showElement(settingsController);
+    hideElement(homeScreen);
+    showElement(bottomGoBackButton);
 };
 
 function moveRobot(leftMotor, rightMotor)
