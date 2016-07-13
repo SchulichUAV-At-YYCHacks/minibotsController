@@ -14,7 +14,7 @@ var settingsController = document.getElementById("settingsController");
 var homeScreen = document.getElementById("homeScreen");
 var bottomGoBackButton = document.getElementById("bottomGoBackButton");
 
-
+/*
 forwardOnly.checked = true;
 if (typeof(localStorage.forwardOnly) != "undefined")
 {
@@ -23,10 +23,10 @@ if (typeof(localStorage.forwardOnly) != "undefined")
     else
         forwardOnly.checked = false;
 }
-    
+*/  
 
-var alignNumberId = document.getElementById("alignNumberId");
-alignNumberId.value = align;
+var alignNumber = document.getElementById("alignNumberId");
+alignNumber.value = align;
 var alignRangeId = document.getElementById("alignRangeId");
 alignRangeId.value = align + 50;
 
@@ -127,7 +127,7 @@ function controllerDown()
 
 function controllerUp()
 {
-	if (document.getElementById("joystickController").style.display != 'none');
+	if (document.getElementById("joystickController").style.display != 'none')
 	{
 		functReset(-1,-1);
 		moveRobot(0,0);
