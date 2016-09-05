@@ -5,8 +5,28 @@ if (localStorage.align)
 else
     align = 0;
 
-var alignNumberId = document.getElementById("alignNumberId");
-alignNumberId.value = align;
+var forwardOnly = document.getElementById("forwardOnly");
+
+var joystickController = document.getElementById("joystickController");
+var buttonController = document.getElementById("buttonController");
+var keyboardController = document.getElementById("keyboardController");
+var settingsController = document.getElementById("settingsController");
+var homeScreen = document.getElementById("homeScreen");
+var bottomGoBackButton = document.getElementById("bottomGoBackButton");
+
+/*
+forwardOnly.checked = true;
+if (typeof(localStorage.forwardOnly) != "undefined")
+{
+    if (localStorage.forwardOnly == "true")
+        forwardOnly.checked = true;
+    else
+        forwardOnly.checked = false;
+}
+*/  
+
+var alignNumber = document.getElementById("alignNumberId");
+alignNumber.value = align;
 var alignRangeId = document.getElementById("alignRangeId");
 alignRangeId.value = align + 50;
 
@@ -14,19 +34,14 @@ alignRangeId.value = align + 50;
 
 function hideElement(theElement)
 {
-    document.getElementById(theElement).style.display = "none";
+    theElement.style.display = "none";
 }
 
 
 function showElement(theElement)
 {
-    document.getElementById(theElement).style.display = "block";
+    theElement.style.display = "block";
 }
-
-
-hideElement("buttonController");
-hideElement("joystickController");
-hideElement("keyboardController");
 
 var canvas = document.getElementById("controllerJoystickCanvas");
 var context = canvas.getContext("2d");
@@ -112,7 +127,7 @@ function controllerDown()
 
 function controllerUp()
 {
-	if (document.getElementById("joystickController").style.display != 'none');
+	if (document.getElementById("joystickController").style.display != 'none')
 	{
 		functReset(-1,-1);
 		moveRobot(0,0);
@@ -174,7 +189,7 @@ function mousePosition(obj, location, ismouse)
 }
 
 document.getElementById("rightButton").onclick = function(){
-    moveRobot(-100, 100);
+    moveRobot(100, -100);
 };
 
 document.getElementById("forwardButton").onclick = function(){
@@ -186,7 +201,7 @@ document.getElementById("stopButton").onclick = function(){
 };
 
 document.getElementById("leftButton").onclick = function(){
-    moveRobot(100, -100);
+    moveRobot(-100, 100);
 };
 
 document.getElementById("reverseButton").onclick = function(){
@@ -194,19 +209,19 @@ document.getElementById("reverseButton").onclick = function(){
 };
 
 document.getElementById("goBackButton").onclick = function(){
-    hideElement("buttonController");
-    showElement("homeScreen");
-    hideElement("bottomGoBackButton");
+    hideElement(buttonController);
+    showElement(homeScreen);
+    hideElement(bottomGoBackButton);
 };
 
 
 document.getElementById("bottomGoBackButton").onclick = function(){
-    hideElement("joystickController");
-    hideElement("buttonController");
-    hideElement("keyboardController");
-    hideElement("settingsController");
-    showElement("homeScreen");
-    hideElement("bottomGoBackButton");
+    hideElement(joystickController);
+    hideElement(buttonController);
+    hideElement(keyboardController);
+    hideElement(settingsController);
+    showElement(homeScreen);
+    hideElement(bottomGoBackButton);
 };
 
 /*
@@ -215,35 +230,35 @@ var buttonsGoBack = document.getElementsByClassName("bottomGoBackButton");
 for (var i = 0; i < buttonsGoBack.length; i++)
 {
     buttonsGoBack[i].onclick = function(){
-        hideElement("joystickController");
-        hideElement("keyboardController");
-        hideElement("settingsController");
-        showElement("homeScreen");
+        hideElement(joystickController);
+        hideElement(keyboardController);
+        hideElement(settingsController);
+        showElement(homeScreen);
     };
 }
 */
 document.getElementById("goToButtons").onclick = function(){
-    showElement("buttonController");
-    hideElement("homeScreen");
-    hideElement("bottomGoBackButton");
+    showElement(buttonController);
+    hideElement(homeScreen);
+    hideElement(bottomGoBackButton);
 };
 
 document.getElementById("goToJoystick").onclick = function(){
-    showElement("joystickController");
-    hideElement("homeScreen");
-    showElement("bottomGoBackButton");
+    showElement(joystickController);
+    hideElement(homeScreen);
+    showElement(bottomGoBackButton);
 };
 
 document.getElementById("goToKeyboard").onclick = function(){
-    showElement("keyboardController");
-    hideElement("homeScreen");
-    showElement("bottomGoBackButton");
+    showElement(keyboardController);
+    hideElement(homeScreen);
+    showElement(bottomGoBackButton);
 };
 
 document.getElementById("goToSettings").onclick = function(){
-    showElement("settingsController");
-    hideElement("homeScreen");
-    showElement("bottomGoBackButton");
+    showElement(settingsController);
+    hideElement(homeScreen);
+    showElement(bottomGoBackButton);
 };
 
 function moveRobot(leftMotor, rightMotor)
@@ -252,9 +267,16 @@ function moveRobot(leftMotor, rightMotor)
         leftMotor = leftMotor * (1+align/100.0)
     if (align > 0)
         rightMotor = rightMotor * (1-align/100.0)
+    if (document.getElementById("forwardOnly").checked)
+    {
+        if (leftMotor < 0)
+            leftMotor = 0;
+        if (rightMotor < 0)
+            rightMotor = 0;
+    }
     var output = "left=" + leftMotor + "&right=" + rightMotor
     document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
-	postData("/command", output, function(input){
+	getData("/command", output, function(input){
 		console.log(input);
 	});
 	console.log(output);
@@ -272,6 +294,10 @@ alignNumberId.onchange = function()
     localStorage.align = align;
 };
 
+forwardOnly.onchange = function()
+{
+     localStorage.forwardOnly = forwardOnly.checked
+};
 
 function postData(path, output, callback)
 {
@@ -285,6 +311,19 @@ function postData(path, output, callback)
     };
     xmlhttp.send(output); 
 }
+
+function getData(path, output, callback)
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", path + "?" + output, true);
+    xmlhttp.onload = function(){
+        if (xmlhttp.status < 400 && xmlhttp.status >= 200){
+            callback(xmlhttp.responseText);
+        }
+    };
+    xmlhttp.send(output); 
+}
+
 
 window.onkeydown = function(data){
     //a 65

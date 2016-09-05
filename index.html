@@ -4,13 +4,11 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<style>
-
-	</style>
+	<title>Minibots Controller</title>
 </head>
     <body>
         <div id = "homeScreen">
-            Hello! Welcome to the minibot controller. Please select a method of controlling your minibot!
+            Hello! Welcome to the minibots controller. Please select a method of controlling your minibot!
 
             <table id="homeScreenTable">
                 <tr>
@@ -98,19 +96,22 @@
             
             <br>
             
+            <input type="checkbox" id="forwardOnly" />Forward Only
+            
+            <br>
+            <br>
             The last command sent to the robot is shown at the bottom of the page!<br>
             It is shown with the notation (left, right) rounded to the nearest integer.<br>
             <br>
             
-            You can find the code for this project:<br>
-            <a href="https://github.com/Minibots/minibotsController">https://github.com/Minibots/minibotsController</a>
+            You can find the code for this project <a href="https://github.com/Minibots/minibotsController">here</a>.
+            <br><br>
         </div>
         
         <div id = "bottomStatus">
             <button id="bottomGoBackButton">Go Back</button>
             <span id="bottomLastCommand"></span>
         </div>
-        
+    <script type="text/javascript" src="js/app.js"></script>
     </body>
 </html>
-<script type="text/javascript" src="js/app.js"></script>
