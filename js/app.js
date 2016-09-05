@@ -1,36 +1,73 @@
-var align;
-
-if (localStorage.align)
-    align = localStorage.align*1
-else
-    align = 0;
-
-var forwardOnly = document.getElementById("forwardOnly");
+var modeSelector = document.getElementById("modeSelector");
 
 var joystickController = document.getElementById("joystickController");
 var buttonController = document.getElementById("buttonController");
 var keyboardController = document.getElementById("keyboardController");
 var settingsController = document.getElementById("settingsController");
+var leftRightStopController = document.getElementById("leftRightStopController");
+
 var homeScreen = document.getElementById("homeScreen");
 var bottomGoBackButton = document.getElementById("bottomGoBackButton");
 
-/*
-forwardOnly.checked = true;
-if (typeof(localStorage.forwardOnly) != "undefined")
+initializeRangeNumberSystemWithId("alignRangeId", "alignNumberId", "align");
+initializeRangeNumberSystemWithId("stopLeftRangeId","stopLeftNumberId", "stopLeft");
+initializeRangeNumberSystemWithId("stopRightRangeId","stopRightNumberId", "stopRight");
+
+function initializeRangeNumberSystemWithId(rangeId, numberId, nameOf)
 {
-    if (localStorage.forwardOnly == "true")
-        forwardOnly.checked = true;
-    else
-        forwardOnly.checked = false;
+    var number = document.getElementById(numberId);
+    var range = document.getElementById(rangeId);
+    initializeRangeNumberSystem(range, number, nameOf)
 }
-*/  
 
-var alignNumber = document.getElementById("alignNumberId");
-alignNumber.value = align;
-var alignRangeId = document.getElementById("alignRangeId");
-alignRangeId.value = align + 50;
+if (!localStorage["mode"])
+    localStorage["mode"] = "normal";
+modeSelector.value = localStorage["mode"];
 
+function loadLeftRightStopController()
+{
+    localStorage["mode"] = modeSelector.value;
+    if (modeSelector.value == "experimental")
+    {
+        showElement(leftRightStopController);
+    }
+    else
+    {
+        hideElement(leftRightStopController);
+    }
+};
 
+loadLeftRightStopController();
+modeSelector.onchange = function()
+{
+    loadLeftRightStopController();
+}
+
+function initializeRangeNumberSystem(range, number, nameOf)
+{
+    if (!localStorage[nameOf])
+        localStorage[nameOf] = 0;
+    number.value = localStorage[nameOf]*1;
+    range.value = localStorage[nameOf]*1 + 50;
+
+    onRangeNumberChange(range, number, nameOf);
+}
+
+function onRangeNumberChange(range,number,nameOf)
+{
+    var valueOf;
+    range.onchange = function()
+    {
+        valueOf = number.value = range.value - 50;
+        localStorage[nameOf] = valueOf;
+    };
+
+    number.onchange = function()
+    {
+        valueOf = range.value = (number.value*1) + 50;
+        localStorage[nameOf] = valueOf;
+    };
+}
 
 function hideElement(theElement)
 {
@@ -48,58 +85,56 @@ var context = canvas.getContext("2d");
 
 var count = 0;
 
-//context.fillStyle = "#FF0000";
-//context.fillRect(0,0,1400,400);
 functReset(-1,-1);
 
 window.onresize = function(event)
 {
-	functReset(-1,-1);
+	  functReset(-1,-1);
 };
 
 function functReset(x,y)
 {
-	var smallestSize = Math.min(window.innerWidth, window.innerHeight);
-	context.canvas.width = smallestSize*4/5;
-	context.canvas.height = smallestSize*4/5;
-	drawBackground();
-	drawCenter(x,y);
+  	var smallestSize = Math.min(window.innerWidth, window.innerHeight);
+  	context.canvas.width = smallestSize*4/5;
+  	context.canvas.height = smallestSize*4/5;
+  	drawBackground();
+  	drawCenter(x,y);
 }
 
 function drawBackground()
 {
-	var smallest = Math.min(canvas.width, canvas.height);
-	context.beginPath();
-    context.lineWidth = 4;
-	context.arc(smallest/2, smallest/2, smallest/3, 0, 2*Math.PI);
-	context.stroke();
+  	var smallest = Math.min(canvas.width, canvas.height);
+  	context.beginPath();
+        context.lineWidth = 4;
+  	context.arc(smallest/2, smallest/2, smallest/3, 0, 2*Math.PI);
+  	context.stroke();
 }
 
 
 
 function drawCenter(x,y)
 {
-	var smallest = Math.min(canvas.width, canvas.height);
-	if (x == -1 && y == -1)
-	{
-		x = smallest/2;
-		y = smallest/2;
-	}
-	context.beginPath();
-    context.lineWidth = 3;
-	context.arc(x, y, smallest/8, 0, 2*Math.PI);
-	context.stroke();
+  	var smallest = Math.min(canvas.width, canvas.height);
+  	if (x == -1 && y == -1)
+  	{
+    		x = smallest/2;
+    		y = smallest/2;
+  	}
+  	context.beginPath();
+        context.lineWidth = 3;
+  	context.arc(x, y, smallest/8, 0, 2*Math.PI);
+  	context.stroke();
 }
 
 var clicked = false;
 var mouse = true;
-canvas.onmousedown = function(){
-	if (!mouse) return;
+canvas.onmousedown = function() {
+  	if (!mouse) return;
     controllerDown();
 };
 
 window.onmouseup = function(){
-	if (!mouse) return;
+	  if (!mouse) return;
     controllerUp();
 };
 
@@ -121,49 +156,49 @@ canvas.addEventListener("touchmove", function(){
 function controllerDown()
 {
     functReset(-1,-1);
-	moveRobot(0,0);
-	clicked = true;
+	  moveRobot(0,0);
+	  clicked = true;
 }
 
 function controllerUp()
 {
-	if (document.getElementById("joystickController").style.display != 'none')
-	{
-		functReset(-1,-1);
-		moveRobot(0,0);
-		clicked = false;
-	}
+  	if (document.getElementById("joystickController").style.display != 'none')
+  	{
+    		functReset(-1,-1);
+    		moveRobot(0,0);
+    		clicked = false;
+  	}
 }
 
 function controllerMove(data)
 {
-	var location = mousePosition(canvas,data,mouse);
-	moveController(location);
+  	var location = mousePosition(canvas,data,mouse);
+  	moveController(location);
 }
 
 function moveController(location)
 {
-	var smallest = Math.min(canvas.width, canvas.height);
-	functReset(location.x, location.y);
+  	var smallest = Math.min(canvas.width, canvas.height);
+  	functReset(location.x, location.y);
 
-	var forwardNoSensor = -(location.y-smallest/2)/(smallest/3);
-	var rightNoSensor = (location.x-smallest/2)/(smallest/3);
-	var leftMotor = 100*rightNoSensor+100*forwardNoSensor
-	var rightMotor = -100*rightNoSensor+100*forwardNoSensor
-	if (leftMotor>100) leftMotor = 100;
-	if (leftMotor<-100) leftMotor = -100;
-	if (rightMotor>100) rightMotor = 100;
-	if (rightMotor<-100) rightMotor = -100;
-	
+  	var forwardNoSensor = -(location.y-smallest/2)/(smallest/3);
+  	var rightNoSensor = (location.x-smallest/2)/(smallest/3);
+  	var leftMotor = 100*rightNoSensor+100*forwardNoSensor
+  	var rightMotor = -100*rightNoSensor+100*forwardNoSensor
+  	if (leftMotor>100) leftMotor = 100;
+  	if (leftMotor<-100) leftMotor = -100;
+  	if (rightMotor>100) rightMotor = 100;
+  	if (rightMotor<-100) rightMotor = -100;
+
     //if (count >= 10)
-	//{
-    if (leftMotor==null || rightMotor == null) return;
-		moveRobot(leftMotor,rightMotor);
-		count = 0;
-	//}
-	//else
-	//	count++;
-	
+  	//{
+        if (leftMotor==null || rightMotor == null) return;
+    		moveRobot(leftMotor,rightMotor);
+    		count = 0;
+  	//}
+  	//else
+  	//	count++;
+
 }
 
 function mousePosition(obj, location, ismouse)
@@ -174,7 +209,7 @@ function mousePosition(obj, location, ismouse)
         return {
             x: location.clientX - rect.left,
             y: location.clientY - rect.top
-        } 
+        }
     }
     else //is touch
     {
@@ -224,19 +259,6 @@ document.getElementById("bottomGoBackButton").onclick = function(){
     hideElement(bottomGoBackButton);
 };
 
-/*
-var buttonsGoBack = document.getElementsByClassName("bottomGoBackButton");
-
-for (var i = 0; i < buttonsGoBack.length; i++)
-{
-    buttonsGoBack[i].onclick = function(){
-        hideElement(joystickController);
-        hideElement(keyboardController);
-        hideElement(settingsController);
-        showElement(homeScreen);
-    };
-}
-*/
 document.getElementById("goToButtons").onclick = function(){
     showElement(buttonController);
     hideElement(homeScreen);
@@ -263,41 +285,31 @@ document.getElementById("goToSettings").onclick = function(){
 
 function moveRobot(leftMotor, rightMotor)
 {
-    if (align < 0)
-        leftMotor = leftMotor * (1+align/100.0)
-    if (align > 0)
-        rightMotor = rightMotor * (1-align/100.0)
-    if (document.getElementById("forwardOnly").checked)
+    if ((localStorage["align"]*1) < 0)
+        leftMotor = leftMotor * (1+(localStorage["align"]*1)/100.0)
+    if ((localStorage["align"]*1) > 0)
+        rightMotor = rightMotor * (1-(localStorage["align"]*1)/100.0)
+    var mode = modeSelector.value;
+    if (mode == "forwardOnly")
     {
         if (leftMotor < 0)
             leftMotor = 0;
         if (rightMotor < 0)
             rightMotor = 0;
     }
+    else if (mode == "experimental")
+    {
+        leftMotor = (localStorage["stopLeft"]*1) + leftMotor;
+        rightMotor = (localStorage["stopRight"]*1) + rightMotor;
+    }
     var output = "left=" + leftMotor + "&right=" + rightMotor
     document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
-	getData("/command", output, function(input){
-		console.log(input);
-	});
-	console.log(output);
+  	getData("/command", output, function(input){
+  		  console.log(input);
+  	});
+	  console.log(output);
 };
 
-alignRangeId.onchange = function()
-{
-    align = alignNumberId.value = alignRangeId.value - 50;
-    localStorage.align = align;
-};
-
-alignNumberId.onchange = function()
-{
-    alignRangeId.value = (align = alignNumberId.value*1) + 50;
-    localStorage.align = align;
-};
-
-forwardOnly.onchange = function()
-{
-     localStorage.forwardOnly = forwardOnly.checked
-};
 
 function postData(path, output, callback)
 {
@@ -309,7 +321,7 @@ function postData(path, output, callback)
             callback(xmlhttp.responseText);
         }
     };
-    xmlhttp.send(output); 
+    xmlhttp.send(output);
 }
 
 function getData(path, output, callback)
@@ -321,7 +333,7 @@ function getData(path, output, callback)
             callback(xmlhttp.responseText);
         }
     };
-    xmlhttp.send(output); 
+    xmlhttp.send(output);
 }
 
 
@@ -335,7 +347,7 @@ window.onkeydown = function(data){
     //left 37
     //right 39
     //space 32
-    
+
     if (document.getElementById('keyboardController').style.display != 'none')
     {
         //rightButton
@@ -366,7 +378,7 @@ window.onkeydown = function(data){
         {
             moveRobot(-100, -100);
         }
-        
+
         document.getElementById('directionalStatus').innerHTML = data.keyCode;
     }
 }

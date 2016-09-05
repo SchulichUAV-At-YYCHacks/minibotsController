@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -84,7 +84,7 @@
             This
             </div>
         </div>
-        <div id = "settingsController">
+        <div id="settingsController">
             <h1>Settings</h1>
             To fix alignment:<br>
             <input type="range" id="alignRangeId" /><br>
@@ -93,21 +93,34 @@
                 Negative numbers will pull the robot to the left.<br>
                 Positive numbers will pull the robot to the right.
             </div>
-            
+
             <br>
-            
-            <input type="checkbox" id="forwardOnly" />Forward Only
-            
-            <br>
+						<select id="modeSelector">
+								<option value="normal">Normal</option>
+								<option value="forwardOnly">Forward Only</option>
+								<option value="experimental">Experimental</option>
+						</select>
+						<br>
+						<br>
+						<div id="leftRightStopController">
+								Left:<br>
+								<input type="range" id="stopLeftRangeId" /><br>
+								<input type="number" id="stopLeftNumberId" /><br>
+								<br>
+								Right:<br>
+								<input type="range" id="stopRightRangeId" /><br>
+								<input type="number" id="stopRightNumberId" /><br>
+						</div>
+
             <br>
             The last command sent to the robot is shown at the bottom of the page!<br>
             It is shown with the notation (left, right) rounded to the nearest integer.<br>
             <br>
-            
+
             You can find the code for this project <a href="https://github.com/Minibots/minibotsController">here</a>.
             <br><br>
         </div>
-        
+
         <div id = "bottomStatus">
             <button id="bottomGoBackButton">Go Back</button>
             <span id="bottomLastCommand"></span>
