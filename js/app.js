@@ -276,7 +276,7 @@ function moveRobot(leftMotor, rightMotor)
     }
     var output = "left=" + leftMotor + "&right=" + rightMotor
     document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
-	postData("/command", output, function(input){
+	getData("/command", output, function(input){
 		console.log(input);
 	});
 	console.log(output);
@@ -311,6 +311,19 @@ function postData(path, output, callback)
     };
     xmlhttp.send(output); 
 }
+
+function getData(path, output, callback)
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", path + "?" + output, true);
+    xmlhttp.onload = function(){
+        if (xmlhttp.status < 400 && xmlhttp.status >= 200){
+            callback(xmlhttp.responseText);
+        }
+    };
+    xmlhttp.send(output); 
+}
+
 
 window.onkeydown = function(data){
     //a 65
