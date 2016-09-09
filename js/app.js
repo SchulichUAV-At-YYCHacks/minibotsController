@@ -89,52 +89,52 @@ functReset(-1,-1);
 
 window.onresize = function(event)
 {
-	  functReset(-1,-1);
+    functReset(-1,-1);
 };
 
 function functReset(x,y)
 {
-  	var smallestSize = Math.min(window.innerWidth, window.innerHeight);
-  	context.canvas.width = smallestSize*4/5;
-  	context.canvas.height = smallestSize*4/5;
-  	drawBackground();
-  	drawCenter(x,y);
+    var smallestSize = Math.min(window.innerWidth, window.innerHeight);
+    context.canvas.width = smallestSize*4/5;
+    context.canvas.height = smallestSize*4/5;
+    drawBackground();
+    drawCenter(x,y);
 }
 
 function drawBackground()
 {
-  	var smallest = Math.min(canvas.width, canvas.height);
-  	context.beginPath();
+    var smallest = Math.min(canvas.width, canvas.height);
+    context.beginPath();
         context.lineWidth = 4;
-  	context.arc(smallest/2, smallest/2, smallest/3, 0, 2*Math.PI);
-  	context.stroke();
+    context.arc(smallest/2, smallest/2, smallest/3, 0, 2*Math.PI);
+    context.stroke();
 }
 
 
 
 function drawCenter(x,y)
 {
-  	var smallest = Math.min(canvas.width, canvas.height);
-  	if (x == -1 && y == -1)
-  	{
-    		x = smallest/2;
-    		y = smallest/2;
-  	}
-  	context.beginPath();
+    var smallest = Math.min(canvas.width, canvas.height);
+    if (x == -1 && y == -1)
+    {
+        x = smallest/2;
+        y = smallest/2;
+    }
+    context.beginPath();
         context.lineWidth = 3;
-  	context.arc(x, y, smallest/8, 0, 2*Math.PI);
-  	context.stroke();
+    context.arc(x, y, smallest/8, 0, 2*Math.PI);
+    context.stroke();
 }
 
 var clicked = false;
 var mouse = true;
 canvas.onmousedown = function() {
-  	if (!mouse) return;
+    if (!mouse) return;
     controllerDown();
 };
 
 window.onmouseup = function(){
-	  if (!mouse) return;
+    if (!mouse) return;
     controllerUp();
 };
 
@@ -156,48 +156,49 @@ canvas.addEventListener("touchmove", function(){
 function controllerDown()
 {
     functReset(-1,-1);
-	  moveRobot(0,0);
-	  clicked = true;
+    moveRobot(0,0);
+    clicked = true;
 }
 
 function controllerUp()
 {
-  	if (document.getElementById("joystickController").style.display != 'none')
-  	{
-    		functReset(-1,-1);
-    		moveRobot(0,0);
-    		clicked = false;
-  	}
+    if (document.getElementById("joystickController").style.display != 'none')
+    {
+        functReset(-1,-1);
+        moveRobot(0,0);
+        clicked = false;
+    }
 }
 
 function controllerMove(data)
 {
-  	var location = mousePosition(canvas,data,mouse);
-  	moveController(location);
+    data.preventDefault();
+    var location = mousePosition(canvas,data,mouse);
+    moveController(location);
 }
 
 function moveController(location)
 {
-  	var smallest = Math.min(canvas.width, canvas.height);
-  	functReset(location.x, location.y);
+    var smallest = Math.min(canvas.width, canvas.height);
+    functReset(location.x, location.y);
 
-  	var forwardNoSensor = -(location.y-smallest/2)/(smallest/3);
-  	var rightNoSensor = (location.x-smallest/2)/(smallest/3);
-  	var leftMotor = 100*rightNoSensor+100*forwardNoSensor
-  	var rightMotor = -100*rightNoSensor+100*forwardNoSensor
-  	if (leftMotor>100) leftMotor = 100;
-  	if (leftMotor<-100) leftMotor = -100;
-  	if (rightMotor>100) rightMotor = 100;
-  	if (rightMotor<-100) rightMotor = -100;
+    var forwardNoSensor = -(location.y-smallest/2)/(smallest/3);
+    var rightNoSensor = (location.x-smallest/2)/(smallest/3);
+    var leftMotor = 100*rightNoSensor+100*forwardNoSensor
+    var rightMotor = -100*rightNoSensor+100*forwardNoSensor
+    if (leftMotor>100) leftMotor = 100;
+    if (leftMotor<-100) leftMotor = -100;
+    if (rightMotor>100) rightMotor = 100;
+    if (rightMotor<-100) rightMotor = -100;
 
     //if (count >= 10)
-  	//{
+    //{
         if (leftMotor==null || rightMotor == null) return;
-    		moveRobot(leftMotor,rightMotor);
-    		count = 0;
-  	//}
-  	//else
-  	//	count++;
+        moveRobot(leftMotor,rightMotor);
+        count = 0;
+    //}
+    //else
+    //  count++;
 
 }
 
@@ -304,10 +305,10 @@ function moveRobot(leftMotor, rightMotor)
     }
     var output = "left=" + leftMotor + "&right=" + rightMotor
     document.getElementById("bottomLastCommand").innerHTML = "(" + Math.round(leftMotor) + ", " + Math.round(rightMotor) + ")";
-  	getData("/command", output, function(input){
-  		  console.log(input);
-  	});
-	  console.log(output);
+    getData("/command", output, function(input){
+        console.log(input);
+    });
+    console.log(output);
 };
 
 
